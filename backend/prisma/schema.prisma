@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model College {
+  id        String @id @default(cuid())
+  name      String
+  collegeId String @unique // e.g. CLG101 (used in dropdown)
+  sheetId   String // Google Sheet ID
+
+  teachers Teacher[]
+  students Student[]
+  qrs      QRCode[]
+}
+
+model Student {
+  id        String @id @default(cuid())
+  googleId  String @unique
+  email     String @unique
+  name      String
+  studentId String @unique // shown in Google Sheet
+
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+
+  scans Scan[]
+}
+
+model Teacher {
+  id       String @id @default(cuid())
+  googleId String @unique
+  email    String @unique
+  name     String
+
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+
+  qrs QRCode[]
+}
+
+model QRCode {
+  id        String   @id @default(cuid())
+  qrToken   String   @unique
+  className String
+  date      DateTime
+  validFrom DateTime
+  validTill DateTime
+
+  teacherId String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+
+  scans Scan[]
+}
+
+model Scan {
+  id String @id @default(cuid())
+
+  studentDbId String
+  student     Student @relation(fields: [studentDbId], references: [id])
+
+  qrId String
+  qr   QRCode @relation(fields: [qrId], references: [id])
+
+  token      String
+  studentLat Float
+  studentLng Float
+  scanTime   DateTime
+  isOffline  Boolean  @default(false)
+}
