@@ -5,7 +5,7 @@ import scanRoutes from "./routes/scanRoute.js"
 import teacherRoutes from "./routes/teacherRoute.js"
 
 const app = express();
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT
 
 // Middlewares
 app.use(cors({
@@ -18,6 +18,6 @@ app.use("/api", routes);
 app.use("/api/scan", scanRoutes);
 app.use("/api/teacher", teacherRoutes);
 
-app.listen(PORT,"192.168.0.195", () => {
+app.listen(PORT,"0.0.0.0", () => {
   console.log(`Backend running on http://localhost:${PORT}`);
 });
