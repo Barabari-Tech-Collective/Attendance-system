@@ -1,11 +1,11 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-export default function ShowQR() {
+function ShowQRContent() {
   const params = useSearchParams();
   const initialToken = params.get("token");
   const className = params.get("class");
@@ -23,14 +23,17 @@ export default function ShowQR() {
 
   // 🔄 Auto-refresh token every 15 sec
   useEffect(() => {
-    const interval = setInterval(async () => {
-      console.log("⏳ Refreshing QR...");
+    if (!token) return;
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/teacher/refresh-qr`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ oldToken: token }),
-      });
+    const interval = setInterval(async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/api/teacher/refresh-qr`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ oldToken: token }),
+        }
+      );
 
       const data = await res.json();
 
@@ -41,7 +44,6 @@ export default function ShowQR() {
 
     return () => clearInterval(interval);
   }, [token]);
-  
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-5">
@@ -71,5 +73,13 @@ export default function ShowQR() {
         This QR auto-refreshes every 15 seconds.
       </p>
     </div>
+  );
+}
+
+export default function ShowQR() {
+  return (
+    <Suspense fallback={<div className="text-black">Loading QR...</div>}>
+      <ShowQRContent />
+    </Suspense>
   );
 }
