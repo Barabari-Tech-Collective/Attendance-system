@@ -12,7 +12,7 @@ export default function TeacherOnboard() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const res = await fetch("http://192.168.0.195:4000/api/teacher/teacher-onboard", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/teacher/teacher-onboard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

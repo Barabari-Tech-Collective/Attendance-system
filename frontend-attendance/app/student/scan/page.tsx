@@ -23,7 +23,7 @@ export default function StudentScan() {
   const markAttendance = async (token: string) => {
     setLoading(true);
 
-    await fetch("http://192.168.0.195:4000/api/scan", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/scan`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

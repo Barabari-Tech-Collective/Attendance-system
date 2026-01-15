@@ -26,7 +26,7 @@ export default function ShowQR() {
     const interval = setInterval(async () => {
       console.log("⏳ Refreshing QR...");
 
-      const res = await fetch("http://192.168.0.195:4000/api/teacher/refresh-qr", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/teacher/refresh-qr`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ oldToken: token }),

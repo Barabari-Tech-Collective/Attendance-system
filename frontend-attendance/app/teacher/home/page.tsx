@@ -14,7 +14,7 @@ export default function TeacherHome() {
   const [qr, setQr] = useState<any>(null);
 
   const generateQR = async () => {
-    const res = await fetch("http://192.168.0.195:4000/api/teacher/generate-qr", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/teacher/generate-qr`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

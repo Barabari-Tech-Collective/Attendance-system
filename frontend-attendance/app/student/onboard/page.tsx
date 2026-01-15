@@ -12,7 +12,7 @@ export default function Onboard() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const res = await fetch("http://192.168.0.195:4000/api/student/onboard", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/student/onboard`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

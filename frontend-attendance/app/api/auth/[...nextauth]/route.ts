@@ -43,7 +43,7 @@ const handler = NextAuth({
     },
       async signIn({ user }) {
       // when user logs in, send data to backend
-      await fetch("http://192.168.0.195:4000/auth/google", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
